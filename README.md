@@ -403,3 +403,354 @@ information or customize the exception handling behavior.
 In general, it is recommended to use throw without an argument (throw;) to preserve the original exception's stack trace whenever possible,
 as it helps in diagnosing and resolving issues more effectively. Use throw with an argument (throw exception_object;) when you need to customize 
 the exception handling behavior or provide additional contextual information.
+
+
+What is NullReferenceException, how do you avoid it & how do you handle it if thrown?
+
+NullReferenceException is a common runtime exception that occurs in object-oriented programming languages like C#, Java, and others when you try to access a member or perform an operation on an object that is null, i.e., it does not refer to any instance of an object. In other words, you are trying to use an object reference that points to nothing, which leads to a NullReferenceException being thrown.
+
+
+
+Here are some ways to avoid NullReferenceException:
+
+Check for null before accessing an object: Always perform a null check before accessing an object or calling a method on it. You can use conditional statements like if (obj != null) or null conditional operator (?.) to safely access an object.
+
+
+
+Example:
+
+if (myObject != null)
+{
+    // Access or perform operation on myObject
+}
+or
+
+myObject?.SomeMethod();
+
+
+
+Initialize objects properly: Ensure that objects are properly initialized before you use them. Make sure that all necessary objects are instantiated and not set to null, especially when declaring instance variables or using dependency injection.
+
+
+
+Use null object pattern: Instead of using null to represent the absence of an object, consider using a null object pattern, where you use a special object that represents the absence of data or behavior. This can help you avoid null checks and prevent NullReferenceException from being thrown.
+
+
+
+Use debugger and code analysis tools: Utilize debugging tools provided by your IDE or code analysis tools to catch null reference issues during development.
+
+
+
+
+
+If a NullReferenceException is thrown, you can handle it using a try-catch block to gracefully handle the exception and provide appropriate error handling.
+
+
+
+Here's an example:
+
+try
+{
+    // Code that may throw NullReferenceException
+}
+catch (NullReferenceException ex)
+{
+    // Handle the exception
+    Console.WriteLine("Null reference exception occurred: " + ex.Message);
+}
+
+
+When handling a NullReferenceException, you should investigate the root cause and fix the issue, rather than simply ignoring the exception or masking it with a try-catch block. It's important to ensure that all objects are properly initialized and null checks are performed to avoid encountering NullReferenceException in your code.
+
+What is the difference between ArgumentExeption and ArgumentNullException?
+
+ArgumentException and ArgumentNullException are both exception types in object-oriented programming languages like C# that are used to indicate that an argument passed to a method or constructor is invalid. However, they have some differences in their specific use cases:
+
+
+
+ArgumentException: This exception is generally used to indicate that an argument passed to a method or constructor is invalid, but it does not necessarily have to be null. It can represent a wider range of invalid values or states for an argument, such as incorrect format, out-of-range values, or other conditions that violate the expected input requirements of the method or constructor.
+
+Example:
+
+void SetAge(int age)
+{
+    if (age < 0 || age > 120)
+    {
+        throw new ArgumentException("Invalid age. Must be between 0 and 120.", nameof(age));
+    }
+    // Set the age
+}
+
+
+
+
+ArgumentNullException: This exception specifically indicates that a null value was passed as an argument to a method or constructor that does not accept null values. It is used when an argument is expected to be non-null, but a null value is passed.
+
+Example:
+
+void SetName(string name)
+{
+    if (name == null)
+    {
+        throw new ArgumentNullException(nameof(name), "Name cannot be null.");
+    }
+    // Set the name
+}
+
+
+In summary, ArgumentException is used for more general cases where an argument is invalid, whereas ArgumentNullException is specifically used when a null value is passed to an argument that does not accept null values. Both exceptions provide information about the invalid argument, such as the argument name, to help with debugging and error handling. It's important to use the appropriate exception type based on the specific validation requirements of your code.
+
+**What is the difference between NullReferenceException and ArgumentNullException?**
+
+NullReferenceException and ArgumentNullException are both exception types in object-oriented programming languages like C# that are used to indicate issues related to null references. However, they have some differences in their specific use cases:
+
+
+
+NullReferenceException: This exception is thrown when you try to access a member or perform an operation on an object that is null, i.e., it does not refer to any instance of an object. It typically occurs when you attempt to dereference a null object reference, such as accessing a property, calling a method, or accessing an element of an array or collection, on an object that is null.
+
+Example:
+
+string name = null;
+int length = name.Length; // This will throw NullReferenceException because name is null
+
+
+
+
+ArgumentNullException: This exception is specifically used when a null value is passed as an argument to a method or constructor that does not accept null values. It is used to indicate that an argument is expected to be non-null, but a null value is passed.
+
+Example:
+
+void SetName(string name)
+{
+    if (name == null)
+    {
+        throw new ArgumentNullException(nameof(name), "Name cannot be null.");
+    }
+    // Set the name
+}
+
+
+In summary, NullReferenceException is thrown when you try to access a member or perform an operation on a null object reference, whereas ArgumentNullException is specifically used when a null value is passed to an argument that does not accept null values. NullReferenceException typically occurs at runtime when accessing null objects, while ArgumentNullException is usually thrown explicitly during argument validation in methods or constructors. It's important to use the appropriate exception type based on the specific null reference scenario in your code.
+
+**What is InvalidOperationException and when to use it?**
+
+InvalidOperationException is an exception type in object-oriented programming languages like C# that is used to indicate that an operation is invalid given the current state of an object or system. It is typically thrown when the operation being performed is not allowed or not valid based on the current state of the object or the system.
+
+
+
+The InvalidOperationException can be used in various scenarios, such as:
+
+Operation on an object in an invalid state: When you try to perform an operation on an object that is in an unexpected or invalid state, you can throw an InvalidOperationException. For example, if you have a state machine and an operation is called when the object is not in the appropriate state to perform that operation, you can throw an InvalidOperationException.
+
+Example:
+
+public void Start()
+{
+    if (currentState != State.Idle)
+    {
+        throw new InvalidOperationException("Cannot start while not in idle state.");
+    }
+    // Perform start operation
+}
+
+
+Unsupported operation: When you try to perform an operation that is not supported or not allowed in the current context, you can throw an InvalidOperationException. For example, if you have an object that represents a read-only collection, and an attempt is made to modify it, you can throw an InvalidOperationException to indicate that the operation is not allowed.
+
+Example:
+
+public void AddItem(T item)
+{
+    if (isReadOnly)
+    {
+        throw new InvalidOperationException("Cannot add item to a read-only collection.");
+    }
+    // Add item to collection
+}
+
+
+Invalid operation based on business rules or logic: When you have custom business rules or logic in your code and an operation violates those rules, you can throw an InvalidOperationException to indicate that the operation is not allowed.
+
+Example:
+
+public void UpdateStatus(Status newStatus)
+{
+    if (!IsValidStatusTransition(currentStatus, newStatus))
+    {
+        throw new InvalidOperationException("Invalid status transition.");
+    }
+    // Update status
+}
+
+
+In summary, InvalidOperationException is used to indicate that an operation is invalid given the current state of an object or system. It can be used in various scenarios where an operation is not allowed or not valid based on business rules, object state, or context. It's important to use InvalidOperationException judiciously and provide meaningful error messages to aid in debugging and error handling.
+
+**What is IndexOfOutOfRangeException and when does it occur?**
+
+IndexOutOfRangeException is an exception type that is thrown when you try to access an array or a collection with an index that is outside the valid range of indices for that array or collection. In other words, it occurs when you attempt to access an element in an array or collection using an index that is either negative or greater than or equal to the length or count of the array or collection.
+
+
+
+Example:
+
+int[] numbers = new int[3];
+numbers[0] = 1;
+numbers[1] = 2;
+numbers[2] = 3;
+
+int value = numbers[3]; // This will throw IndexOutOfRangeException
+In the above example, numbers is an array of length 3, so the valid indices are 0, 1, and 2. However, when we try to access numbers[3], which is outside the valid index range, it will result in an IndexOutOfRangeException being thrown.
+
+
+
+IndexOutOfRangeException typically occurs during runtime and can be caught and handled using standard exception handling techniques in C#, such as try-catch blocks. It's important to ensure that you always use valid indices when accessing arrays or collections to avoid this exception. To prevent IndexOutOfRangeException, you should validate indices before accessing elements in arrays or collections, and make sure they fall within the valid range of indices for that data structure.
+
+**What is 'catch when' and in which scenarios it is useful?**
+
+catch when is a feature in C# that allows you to specify a condition in a catch block, which determines whether the catch block will be executed or not. It provides additional filtering capability in exception handling, allowing you to catch only certain exceptions that meet a specified condition.
+
+
+
+The syntax for using catch when is as follows:
+
+try
+{
+    // Code that may throw exceptions
+}
+catch (ExceptionType ex) when (condition)
+{
+    // Code to handle the exception if the condition is true
+}
+
+
+In this syntax, ExceptionType is the type of exception you want to catch, and condition is a Boolean expression that determines whether the catch block should be executed or not. If the condition is true, the catch block will be executed, otherwise, it will be skipped, and the next catch block (if any) will be evaluated.
+
+
+
+
+
+catch when can be useful in various scenarios, such as:
+
+1. Fine-grained exception handling: You can use catch when to catch only specific exceptions that meet a certain condition. This allows you to handle exceptions in a more fine-grained manner based on additional criteria beyond just the type of the exception. For example, you can catch a specific type of exception only if it occurs in a certain context or with specific properties.
+
+Example:
+
+try
+{
+    // Code that may throw exceptions
+}
+catch (DivideByZeroException ex) when (ex.Message.Contains("custom"))
+{
+    // Handle DivideByZeroException only if the error message contains "custom"
+}
+
+
+2. Dynamic exception handling: You can use catch when to dynamically handle exceptions based on runtime conditions. This allows you to change the behavior of exception handling based on the state of the program at runtime. For example, you can catch exceptions only if a certain flag is set or if a certain condition is met during runtime.
+
+Example:
+
+try
+{
+    // Code that may throw exceptions
+}
+catch (Exception ex) when (SomeRuntimeCondition())
+{
+    // Handle the exception only if SomeRuntimeCondition() is true
+}
+
+
+It's important to use catch when judiciously and avoid overly complex conditions that may make the code harder to read and maintain. It's also worth noting that catch when does not affect the execution of the finally block, if present. The finally block will always be executed, regardless of whether any catch block is executed or not.
+
+Is it good practice to inherit a custom exception from 'ApplicationException'? And why?
+
+In general, it is not considered good practice to inherit custom exceptions from ApplicationException in C#.
+
+
+
+The reason is that ApplicationException is a base exception class in C# that was intended to be used as a base class for creating custom exceptions, but it was not fully realized and is not recommended for use in modern C# code. In fact, the .NET Framework Design Guidelines state that "Do not derive from ApplicationException" and "Deriving from ApplicationException does not add significant value."
+
+
+
+Instead, it is recommended to inherit custom exception classes directly from the System.Exception class, which is the root of the exception hierarchy in C#. The System.Exception class provides all the necessary functionality for creating custom exceptions, including support for serialization, stack trace information, and inner exceptions, among others. By inheriting directly from System.Exception, you can create a more flexible and maintainable exception hierarchy that adheres to standard coding practices and makes your code more consistent with the broader C# and .NET ecosystem.
+
+
+
+Example of creating a custom exception class:
+
+using System;
+
+public class MyCustomException : Exception
+{
+    public MyCustomException() { }
+    public MyCustomException(string message) : base(message) { }
+    public MyCustomException(string message, Exception innerException) : base(message, innerException) { }
+
+    // Add any additional properties or methods specific to your custom exception
+}
+
+
+By using System.Exception as the base class for custom exceptions, you ensure that your exception hierarchy aligns with the standard conventions followed in C# and .NET, which can improve code maintainability and interoperability with other libraries and frameworks. Additionally, it avoids potential confusion or issues that may arise from using ApplicationException, which is not widely used and not recommended in modern C# development.
+
+**What is stack trace in C#; and how is it useful in exception handling?**
+
+In C#, a stack trace is a collection of method call frames that represent the sequence of method calls that led to the occurrence of an exception. It provides a chronological view of the methods that were called, including the line numbers where the methods were invoked, in the order in which they were called, leading up to the point where an exception was thrown. The stack trace is a useful diagnostic tool for understanding the chain of events that led to an exception, and it can be invaluable in identifying the root cause of an error.
+
+
+
+The stack trace is automatically captured by the .NET runtime when an exception is thrown, and it is included as a property of the Exception object that represents the thrown exception. The StackTrace property of the Exception class in C# provides access to the stack trace information. You can use the StackTrace property to retrieve the string representation of the stack trace, which can be logged or displayed as part of error messages for debugging purposes.
+
+
+
+Example usage of the StackTrace property:
+
+try
+{
+    // Code that may throw an exception
+}
+catch (Exception ex)
+{
+    // Log or display the stack trace for debugging purposes
+    Console.WriteLine("Exception occurred: " + ex.Message);
+    Console.WriteLine("Stack trace: " + ex.StackTrace);
+}
+
+
+The stack trace is particularly useful in exception handling for the following reasons:
+
+Debugging: The stack trace provides a detailed trace of the method call hierarchy that led to the exception. This can help in identifying the exact line of code where the exception was thrown, and it can aid in debugging and fixing the issue.
+
+Root cause analysis: The stack trace helps in identifying the root cause of an exception by providing a clear view of the sequence of method calls that led to the exception. This can be valuable in understanding the chain of events that led to the error and diagnosing the underlying issue.
+
+Logging and error reporting: The stack trace can be logged or included in error messages, which can be helpful in diagnosing issues in production environments. It provides a detailed record of the method call hierarchy, allowing developers to reproduce and analyze the issue more effectively.
+
+
+
+However, it's important to note that stack trace information can contain sensitive data, such as method names or line numbers, that may pose security risks if exposed to end-users or logged in production environments. Therefore, it's important to use stack trace information judiciously and follow proper security practices when using it in exception handling or error reporting scenarios.
+
+**What is the purpose of the "nameof" operator in C#?**
+
+The "nameof" operator in C# is used to obtain the name of a variable, type, or member at compile-time as a string. It allows developers to refer to the name of a variable, type, or member in a strongly-typed and refactor-safe manner.
+
+
+
+The main purpose of the "nameof" operator is to improve code maintainability by reducing the usage of hard-coded string literals, which can be error-prone and difficult to refactor. By using "nameof", developers can ensure that if a variable, type, or member is renamed, the corresponding references to its name using "nameof" will also be updated automatically during compile-time, preventing run-time errors due to stale string literals.
+
+
+
+Here's an example of how "nameof" can be used in combination with "ArgumentNullException":
+
+public void ValidateInput(string value, string paramName)
+{
+    if (value == null)
+    {
+        throw new ArgumentNullException(nameof(value), $"{paramName} cannot be null.");
+    }
+
+    // Rest of the validation logic
+}
+
+
+In the above example, the "nameof" operator is used to obtain the name of the "value" parameter at compile-time, which is then passed as the first argument to the "ArgumentNullException" constructor. The "paramName" parameter is used to specify a custom parameter name that is included in the exception message using string interpolation. This way, if the "value" parameter is null, the exception message will be "value cannot be null.", where "value" is dynamically obtained at compile-time using "nameof".
+
+
+
+By using "nameof" in this manner, you can ensure that the parameter name included in the exception message is always in sync with the actual parameter name in the method signature, even if the parameter name is changed during refactoring. This can help make your exception messages more meaningful and facilitate easier debugging and troubleshooting of issues related to null or invalid parameter values.
